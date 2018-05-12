@@ -15,8 +15,7 @@ import {
 import 'font-awesome/css/font-awesome.css'
 import 'antd-mobile/dist/antd-mobile.css'
 import AppRootMechanics from './AppRootMechanics'
-import HomePage from './pages/HomePage'
-import FormPage from './pages/FormPage'
+import Dashboard from './pages/Dashboard'
 
 class AppRoot extends Component {
 
@@ -24,8 +23,7 @@ class AppRoot extends Component {
     return (
       <Switch>
 
-        <Route exact path='/' render={HomePage} />
-        <Route exact path='/form' render={FormPage} />
+        <Route exact path='/' render={Dashboard} />
 
       </Switch>
     )
