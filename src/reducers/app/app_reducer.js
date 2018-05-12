@@ -1,10 +1,13 @@
 import {
   CHANGE_LANGUAGE,
+  CHANGE_ENV,
+  CHANGE_CHOSEN_MAP,
 } from '../../actions/action_types'
 
 const INITIAL_STATE = {
   selected_language: 'en',
-  node_env: 'DEVELOPMENT',
+  node_env: 'development',
+  chosen_map: 'domain',
 }
 
 export default (state = INITIAL_STATE, action) => {
@@ -14,10 +17,15 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         selected_language: action.payload,
       }
-    case 'CHANGE_ENV':
+    case CHANGE_ENV:
       return {
         ...state,
-        node_env: action.payload
+        node_env: action.payload,
+      }
+    case CHANGE_CHOSEN_MAP:
+      return {
+        ...state,
+        chosen_map: action.payload,
       }
 		default:
 			return {

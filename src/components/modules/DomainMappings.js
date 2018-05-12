@@ -1,4 +1,4 @@
-// Compt for copying as a TypeformMaps
+// Compt for copying as a DomainMappings
 // This compt is used for...
 
 import React, { Component } from 'react'
@@ -12,29 +12,29 @@ import {
 } from 'antd-mobile'
 
 
-class TypeformMaps extends Component {
+class DomainMappings extends Component {
 
 	render() {
 		return (
-			<div id='TypeformMaps' style={comStyles().container}>
-				TypeformMaps
+			<div id='DomainMappings' style={comStyles().container}>
+				DomainMappings
 			</div>
 		)
 	}
 }
 
 // defines the types of variables in this.props
-TypeformMaps.propTypes = {
+DomainMappings.propTypes = {
 	history: PropTypes.object.isRequired,
 }
 
 // for all optional props, define a default value
-TypeformMaps.defaultProps = {
+DomainMappings.defaultProps = {
 
 }
 
 // Wrap the prop in Radium to allow JS styling
-const RadiumHOC = Radium(TypeformMaps)
+const RadiumHOC = Radium(DomainMappings)
 
 // Get access to state from the Redux store
 const mapReduxToProps = (redux) => {
