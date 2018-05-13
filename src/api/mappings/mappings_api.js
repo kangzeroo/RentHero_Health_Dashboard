@@ -1,6 +1,20 @@
 import axios from 'axios'
 import authHeaders from '../authHeaders'
 
+export const getDomainMappings = (node_env, mapName) => {
+  const p = new Promise((res, rej) => {
+    axios.get(`https://s3.amazonaws.com/renthero-ai-mappings/knowledge_domains/${node_env.toLowerCase()}/${mapName}`, authHeaders())
+      .then((data) => {
+        console.log(data)
+        res(data.data)
+      })
+      .catch((err) => {
+        rej(err)
+      })
+  })
+  return p
+}
+
 export const getBasicFormMappings = (node_env) => {
   const p = new Promise((res, rej) => {
     const x = [

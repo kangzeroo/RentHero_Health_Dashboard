@@ -1,13 +1,15 @@
 import {
   CHANGE_LANGUAGE,
   CHANGE_ENV,
-  CHANGE_CHOSEN_MAP,
+  CHANGE_CHOSEN_DOMAIN,
+  CHANGE_CHOSEN_TYPEFORM,
 } from '../../actions/action_types'
 
 const INITIAL_STATE = {
   selected_language: 'en',
   node_env: 'development',
-  chosen_map: 'domain',
+  chosen_domain: 'spec_unstruc',
+  chosen_typeform: 'basic'
 }
 
 export default (state = INITIAL_STATE, action) => {
@@ -22,10 +24,15 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         node_env: action.payload,
       }
-    case CHANGE_CHOSEN_MAP:
+    case CHANGE_CHOSEN_DOMAIN:
       return {
         ...state,
-        chosen_map: action.payload,
+        chosen_domain: action.payload,
+      }
+    case CHANGE_CHOSEN_TYPEFORM:
+      return {
+        ...state,
+        chosen_typeform: action.payload,
       }
 		default:
 			return {
