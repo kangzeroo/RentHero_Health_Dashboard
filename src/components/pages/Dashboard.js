@@ -10,7 +10,7 @@ import { withRouter } from 'react-router-dom'
 import {
   Button,
 } from 'antd-mobile'
-import { changeNodeENV, changeChosenMapping } from '../../actions/app/app_actions'
+import { changeNodeENV, changeChosenDomain } from '../../actions/app/app_actions'
 import TypeformMappings from '../modules/TypeformMappings'
 import DomainMappings from '../modules/DomainMappings'
 
@@ -19,7 +19,7 @@ class Dashboard extends Component {
 
   renderNodeENVS() {
     return (
-      <div style={{ display: 'flex', flexDirection: 'row' }}>
+      <div style={{ display: 'flex', flexDirection: 'row', backgroundColor: 'blue', padding: '10px' }}>
         <Button onClick={() => this.props.changeNodeENV('development')}>DEVELOPMENT</Button>
         <Button onClick={() => this.props.changeNodeENV('staging')}>STAGING</Button>
         <Button onClick={() => this.props.changeNodeENV('production')}>PRODUCTION</Button>
@@ -27,26 +27,25 @@ class Dashboard extends Component {
     )
   }
 
-  renderAppropriateDropdown() {
+  renderDomainChoices() {
     return (
-      <div style={{ display: 'flex', flexDirection: 'row' }}>
-        <Button onClick={() => this.props.changeChosenMapping('domain')}>DOMAIN MAPPINGS</Button>
-        <Button onClick={() => this.props.changeChosenMapping('basic')}>BASIC TYPEFORM</Button>
-        <Button onClick={() => this.props.changeChosenMapping('advanced')}>ADVANCED TYPEFORM</Button>
-        <Button onClick={() => this.props.changeChosenMapping('seeking')}>SEEKING TYPEFORM</Button>
+      <div style={{ display: 'flex', flexDirection: 'column', backgroundColor: 'red', padding: '10px' }}>
+        <Button onClick={() => this.props.changeChosenDomain('geo')}>GEO</Button>
+        <Button onClick={() => this.props.changeChosenDomain('searching')}>SEARCHING</Button>
+        <Button onClick={() => this.props.changeChosenDomain('meta')}>META</Button>
+        <Button onClick={() => this.props.changeChosenDomain('general')}>GENERAL</Button>
+        <Button onClick={() => this.props.changeChosenDomain('tours')}>TOURS</Button>
+        <Button onClick={() => this.props.changeChosenDomain('spec_struc')}>SPEC_STRUC</Button>
+        <Button onClick={() => this.props.changeChosenDomain('spec_unstruc')}>SPEC_UNSTRUC</Button>
       </div>
     )
   }
 
   renderUI() {
-    if (this.props.chosen_map === 'domain') {
-      return (<DomainMappings />)
-    } else if (this.props.chosen_map === 'basic' || this.props.chosen_map === 'advanced' || this.props.chosen_map === 'seeking') {
+    if (this.props.chosen_domain === 'spec_unstruc') {
       return (<TypeformMappings />)
     } else {
-      return (
-        <div>Nothing Selected</div>
-      )
+      return null
     }
   }
 
@@ -58,8 +57,9 @@ class Dashboard extends Component {
           this.renderNodeENVS()
         }
         {
-          this.renderAppropriateDropdown()
+          this.renderDomainChoices()
         }
+        <DomainMappings />
         {
           this.renderUI()
         }
@@ -73,8 +73,8 @@ Dashboard.propTypes = {
 	history: PropTypes.object.isRequired,
   changeNodeENV: PropTypes.func.isRequired,
   node_env: PropTypes.string.isRequired,
-  changeChosenMapping: PropTypes.func.isRequired,
-  chosen_map: PropTypes.string.isRequired,
+  changeChosenDomain: PropTypes.func.isRequired,
+  chosen_domain: PropTypes.string.isRequired,
 }
 
 // for all optional props, define a default value
@@ -89,7 +89,7 @@ const RadiumHOC = Radium(Dashboard)
 const mapReduxToProps = (redux) => {
 	return {
     node_env: redux.app.node_env,
-    chosen_map: redux.app.chosen_map,
+    chosen_domain: redux.app.chosen_domain,
 	}
 }
 
@@ -97,7 +97,7 @@ const mapReduxToProps = (redux) => {
 export default withRouter(
 	connect(mapReduxToProps, {
     changeNodeENV,
-    changeChosenMapping,
+    changeChosenDomain,
 	})(RadiumHOC)
 )
 
@@ -109,6 +109,8 @@ const comStyles = () => {
 		container: {
       display: 'flex',
       flexDirection: 'column',
+      backgroundColor: 'yellow',
+      padding: '10px',
 		}
 	}
 }

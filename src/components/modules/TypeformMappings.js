@@ -8,8 +8,9 @@ import PropTypes from 'prop-types'
 import Rx from 'rxjs'
 import { withRouter } from 'react-router-dom'
 import {
-
+  Button,
 } from 'antd-mobile'
+import { changeChosenTypeform } from '../../actions/app/app_actions'
 import { getBasicFormMappings, getAdvancedFormMappings, getSeekingFormMappings } from '../../api/mappings/mappings_api'
 
 
@@ -42,7 +43,7 @@ class TypeformMappings extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.node_env !== this.props.node_env || prevProps.chosen_map !== this.props.chosen_map) {
+    if (prevProps.node_env !== this.props.node_env || prevProps.chosen_typeform !== this.props.chosen_typeform) {
       this.updateMaps().then((data) => {
         console.log(data)
         this.setState({
@@ -59,11 +60,11 @@ class TypeformMappings extends Component {
   }
 
   updateMaps() {
-    if (this.props.chosen_map === 'basic') {
+    if (this.props.chosen_typeform === 'basic') {
       return getBasicFormMappings(this.props.node_env)
-    } else if (this.props.chosen_map === 'advanced') {
+    } else if (this.props.chosen_typeform === 'advanced') {
       return getAdvancedFormMappings(this.props.node_env)
-    } else if (this.props.chosen_map === 'seeking') {
+    } else if (this.props.chosen_typeform === 'seeking') {
       return getSeekingFormMappings(this.props.node_env)
     }
   }
@@ -79,7 +80,7 @@ class TypeformMappings extends Component {
     console.log(questions)
     return (
       <div>
-        <input value={this.state.search_string} onChange={(e) => this.setState({ search_string: e.target.value })} />
+        <input value={this.state.search_string} placeholder='Search Filter' onChange={(e) => this.setState({ search_string: e.target.value })} />
         <div style={{ display: 'flex', flexDirection: 'row' }}>
           <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
             <h2>Intent-to-Tags Mappings</h2>
@@ -116,10 +117,23 @@ class TypeformMappings extends Component {
     )
   }
 
+  renderChoices() {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'row' }}>
+        <Button onClick={() => this.props.changeChosenTypeform('basic')}>BASIC TYPEFORM</Button>
+        <Button onClick={() => this.props.changeChosenTypeform('advanced')}>ADVANCED TYPEFORM</Button>
+        <Button onClick={() => this.props.changeChosenTypeform('seeking')}>SEEKING TYPEFORM</Button>
+      </div>
+    )
+  }
+
 	render() {
 		return (
 			<div id='TypeformMappings' style={comStyles().container}>
-				<h1>{this.props.chosen_map} TypeformMappings for {this.props.node_env}</h1>
+        {
+          this.renderChoices()
+        }
+				<h1>{this.props.chosen_typeform} TypeformMappings for {this.props.node_env}</h1>
         {
           this.state.intentMap && this.state.typeformMap
           ?
@@ -149,14 +163,15 @@ const RadiumHOC = Radium(TypeformMappings)
 const mapReduxToProps = (redux) => {
 	return {
     node_env: redux.app.node_env,
-    chosen_map: redux.app.chosen_map,
+    chosen_typeform: redux.app.chosen_typeform,
+    changeChosenTypeform: PropTypes.func.isRequired,
 	}
 }
 
 // Connect together the Redux store with this React component
 export default withRouter(
 	connect(mapReduxToProps, {
-
+    changeChosenTypeform,
 	})(RadiumHOC)
 )
 
@@ -168,6 +183,8 @@ const comStyles = () => {
 		container: {
       display: 'flex',
       flexDirection: 'column',
+      backgroundColor: 'green',
+      padding: '20px',
 		},
     tag: {
       fontSize: '1.5rem',
