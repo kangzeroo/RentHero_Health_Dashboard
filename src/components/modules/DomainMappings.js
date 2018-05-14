@@ -71,6 +71,8 @@ class DomainMappings extends Component {
 			mapName = 'specific_struc_intents.json'
 		} else if (this.props.chosen_domain === 'spec_unstruc') {
 			mapName = 'specific_unstruc_intents.json'
+		} else if (this.props.chosen_domain === 'init') {
+			mapName = 'init_intents.json'
 		}
     return getDomainMappings(this.props.node_env, mapName)
   }

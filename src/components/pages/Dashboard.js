@@ -79,7 +79,7 @@ class Dashboard extends Component {
       else if (e.key == ".$10"){
         message.info('Spec_unstruc')
         this.props.changeChosenDomain('spec_unstruc')
-      } else {
+      } else if (e.key == ".$11") {
         message.info('Init')
         this.props.changeChosenDomain('init')
       }
