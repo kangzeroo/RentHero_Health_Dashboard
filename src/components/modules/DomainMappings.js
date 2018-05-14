@@ -10,7 +10,7 @@ import { withRouter } from 'react-router-dom'
 import {
 
 } from 'antd-mobile'
-import { Card } from 'antd'
+import { Card, Table, Button } from 'antd'
 import { getDomainMappings } from '../../api/mappings/mappings_api'
 
 
@@ -53,6 +53,8 @@ class DomainMappings extends Component {
     }
   }
 
+
+
   updateMaps() {
 		let mapName = ''
 		if (this.props.chosen_domain === 'geo') {
@@ -73,27 +75,32 @@ class DomainMappings extends Component {
     return getDomainMappings(this.props.node_env, mapName)
   }
 
+
 	renderDomainMapping() {
 		const relationships = this.state.domainRelationships.filter((rel) => {
 			return rel.dialogFlow_intentID.toLowerCase().indexOf(this.state.search_string.toLowerCase()) > -1 || rel.dialogFlow_intentName.toLowerCase().indexOf(this.state.search_string.toLowerCase()) > -1 || rel.endpoint.toLowerCase().indexOf(this.state.search_string.toLowerCase()) > -1
 		})
+		const columns = [{
+			title: 'INTENT ID',
+			dataIndex: 'dialogFlow_intentID',
+		}, {
+			title: 'INTENT NAME',
+			dataIndex: 'dialogFlow_intentName',
+		}, {
+			title: 'ENDPOINT',
+			dataIndex: 'endpoint',
+		}]
 		return (
 			<div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
 				<h2 style={{textAlign: 'center', fontWeight: 'bold'}}>{this.props.chosen_domain}</h2>
 				<h4>Domain Prefix ID (should match above domain): {this.state.domainMap.domain_prefix}</h4>
 				<div style={comStyles().domainboxes}>
+				{console.log(relationships)}
 				{
-					relationships.map((rel) => {
-						return (
-							<div key={rel.dialogFlow_intentID} >
-								<Card style={{ width: 400, marginTop: '5%'}}>
-									<p>ID: <br />d{rel.dialogFlow_intentID} </p>
-									<p>NAME: <br />{rel.dialogFlow_intentName}</p>
-									<p>ENDPOINT: <br />{rel.endpoint}</p>
-								</Card>
-							</div>
-						)
-					})
+					<div>
+						<Table columns={columns} dataSource={relationships} />
+					</div>
+
 				}
 				</div>
 			</div>

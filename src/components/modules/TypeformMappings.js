@@ -9,7 +9,7 @@ import Rx from 'rxjs'
 import { withRouter } from 'react-router-dom'
 import {
 } from 'antd-mobile'
-import { Button, Menu, Dropdown, Icon, message, Card } from 'antd'
+import { Button, Menu, Dropdown, Icon, message, Card, Table } from 'antd'
 import { changeChosenTypeform } from '../../actions/app/app_actions'
 import { getBasicFormMappings, getAdvancedFormMappings, getSeekingFormMappings } from '../../api/mappings/mappings_api'
 
@@ -78,47 +78,49 @@ class TypeformMappings extends Component {
     })
     console.log(relationships)
     console.log(questions)
+    const intentTagColumn = [{
+			title: 'INTENT ID',
+			dataIndex: 'dialogFlow_intentID',
+		}, {
+			title: 'INTENT NAME',
+			dataIndex: 'dialogFlow_intentName',
+		}, {
+			title: 'TAG',
+			dataIndex: 'typeForm_Tags',
+		}]
+    const questionTagColumn = [{
+      title: 'QUESTION ID',
+      dataIndex: 'question_ids',
+    }, {
+      title: 'QUESTION',
+      dataIndex: 'sample_phrasing',
+    }, {
+      title: 'TAG',
+      dataIndex: 'tag_ids',
+    }]
     return (
       <div>
         <br />
         <input value={this.state.search_string} placeholder='Filter Typeforms' onChange={(e) => this.setState({ search_string: e.target.value })} />
-        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around', }}>
-          <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>
+        <div style={{ display: 'flex', flexDirection: 'row',}}>
+          <div style={{ flexDirection: 'column', textAlign: 'center' }}>
             <h2>Intent-to-Tags Mappings</h2>
             <h4>FORM ID: {this.state.intentMap.form_id}</h4>
             {
-              relationships.map((rel) => {
-                return (
-                  <div key={rel.dialogFlow_intentID}>
-                    <Card style={{ width: 400, marginTop: '5%'}}>
-                      <p>ID: <br />d{rel.dialogFlow_intentID} </p>
-                      <p>NAME: <br />{rel.dialogFlow_intentName}</p>
-                      <p>ENDPOINT: <br />{rel.typeForm_Tags}</p>
-                    </Card>
-                  </div>
-                )
-              })
+              <div>
+                <Table columns={intentTagColumn} dataSource={relationships}/>
+              </div>
             }
 
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>
+          <div style={{ flexDirection: 'column', textAlign: 'center' }}>
             <h2>Typeform-to-Tags Mappings</h2>
             <h4>FORM ID: {(this.state.typeformMap.form_id)}</h4>
-            <div>
             {
-              questions.map((ques) => {
-                return (
-                  <div key={JSON.stringify(ques.question_ids)}>
-                    <Card style={{ width: 400, marginTop: '5%'}}>
-                      <p>ID: <br />d{ques.question_ids} </p>
-                      <p>QUESTION: <br />{ques.sample_phrasing}</p>
-                      <p>ENDPOINT: <br />{ques.tag_ids}</p>
-                    </Card>
-                  </div>
-                )
-              })
+              <div>
+                <Table columns={questionTagColumn} dataSource={questions}/>
+              </div>
             }
-            </div>
           </div>
         </div>
       </div>
@@ -214,7 +216,7 @@ const comStyles = () => {
 		container: {
       display: 'flex',
       flexDirection: 'column',
-      backgroundColor: 'green',
+      backgroundColor: 'white',
       padding: '20px',
 		},
     tag: {

@@ -76,9 +76,12 @@ class Dashboard extends Component {
         message.info('Spec_struc')
         this.props.changeChosenDomain('spec_struc')
       }
-      else {
+      else if (e.key == ".$10"){
         message.info('Spec_unstruc')
         this.props.changeChosenDomain('spec_unstruc')
+      } else {
+        message.info('Init')
+        this.props.changeChosenDomain('init')
       }
     }
     const menu = (
@@ -90,6 +93,7 @@ class Dashboard extends Component {
         <Menu.Item key="8">TOURS</Menu.Item>
         <Menu.Item key="9">SPEC_STRUC</Menu.Item>
         <Menu.Item key="10">SPEC_UNSTRUC</Menu.Item>
+        <Menu.Item key="11">INIT</Menu.Item>
       </Menu>
     )
     return (
