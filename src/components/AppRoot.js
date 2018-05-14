@@ -14,6 +14,7 @@ import {
 } from 'react-router-dom'
 import 'font-awesome/css/font-awesome.css'
 import 'antd-mobile/dist/antd-mobile.css'
+import 'antd/dist/antd.css'
 import AppRootMechanics from './AppRootMechanics'
 import Dashboard from './pages/Dashboard'
 

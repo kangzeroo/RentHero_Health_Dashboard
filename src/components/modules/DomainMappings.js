@@ -10,6 +10,7 @@ import { withRouter } from 'react-router-dom'
 import {
 
 } from 'antd-mobile'
+import { Card } from 'antd'
 import { getDomainMappings } from '../../api/mappings/mappings_api'
 
 
@@ -78,19 +79,23 @@ class DomainMappings extends Component {
 		})
 		return (
 			<div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
-				<h2>{this.props.chosen_domain}</h2>
+				<h2 style={{textAlign: 'center', fontWeight: 'bold'}}>{this.props.chosen_domain}</h2>
 				<h4>Domain Prefix ID (should match above domain): {this.state.domainMap.domain_prefix}</h4>
+				<div style={comStyles().domainboxes}>
 				{
 					relationships.map((rel) => {
 						return (
-							<div key={rel.dialogFlow_intentID}>
-								<div><b>ID: </b>{rel.dialogFlow_intentID}</div>
-								<div><b>NAME: </b>{rel.dialogFlow_intentName}</div>
-								<div style={comStyles().tag}><b>ENDPOINT: </b>{rel.endpoint}</div>
+							<div key={rel.dialogFlow_intentID} >
+								<Card style={{ width: 400, marginTop: '5%'}}>
+									<p>ID: <br />d{rel.dialogFlow_intentID} </p>
+									<p>NAME: <br />{rel.dialogFlow_intentName}</p>
+									<p>ENDPOINT: <br />{rel.endpoint}</p>
+								</Card>
 							</div>
 						)
 					})
 				}
+				</div>
 			</div>
 		)
 	}
@@ -98,8 +103,11 @@ class DomainMappings extends Component {
 	render() {
 		return (
 			<div id='DomainMappings' style={comStyles().container}>
-				DomainMappings
-				<input value={this.state.search_string} placeholder='Search Filter' onChange={(e) => this.setState({ search_string: e.target.value })} />
+				<div style={{textAlign: 'center'}}>
+				<br />
+				<input value={this.state.search_string} placeholder='Filter Domain Mappings' onChange={(e) => this.setState({ search_string: e.target.value })} style={{width: '200px'}} />
+				<br />
+				</div>
 				{
 					this.state.domainMap && this.state.domainRelationships && this.state.domainRelationships.length > 0
 					?
@@ -150,11 +158,17 @@ const comStyles = () => {
 		container: {
       display: 'flex',
       flexDirection: 'column',
+			textAlign: 'center'
 		},
     tag: {
       fontSize: '1.5rem',
       color: 'blue',
       fontWeight: 'bold',
-    }
+    },
+		domainboxes: {
+      display: 'flex',
+			flexWrap: 'wrap',
+			justifyContent: 'space-around',
+		}
 	}
 }

@@ -8,8 +8,8 @@ import PropTypes from 'prop-types'
 import Rx from 'rxjs'
 import { withRouter } from 'react-router-dom'
 import {
-  Button,
 } from 'antd-mobile'
+import { Button, Menu, Dropdown, Icon, message } from 'antd'
 import { changeNodeENV, changeChosenDomain } from '../../actions/app/app_actions'
 import TypeformMappings from '../modules/TypeformMappings'
 import DomainMappings from '../modules/DomainMappings'
@@ -18,25 +18,87 @@ import DomainMappings from '../modules/DomainMappings'
 class Dashboard extends Component {
 
   renderNodeENVS() {
+      const handleMenuClick = (e) => {
+        if (e.key == ".$1"){
+          message.info('Development')
+          this.props.changeNodeENV('development')
+        }
+        else if (e.key == ".$2") {
+          message.info('Staging')
+          this.props.changeNodeENV('staging')
+        }
+        else if (e.key == ".$3") {
+          message.info('Production')
+          this.props.changeNodeENV('production')
+        }
+      }
+      const menu = (
+        <Menu onClick={handleMenuClick}>
+          <Menu.Item key="1">DEVELOPMENT</Menu.Item>
+          <Menu.Item key="2">STAGING</Menu.Item>
+          <Menu.Item key="3">PRODUCTION</Menu.Item>
+        </Menu>
+      )
     return (
-      <div style={{ display: 'flex', flexDirection: 'row', backgroundColor: 'blue', padding: '10px' }}>
-        <Button onClick={() => this.props.changeNodeENV('development')}>DEVELOPMENT</Button>
-        <Button onClick={() => this.props.changeNodeENV('staging')}>STAGING</Button>
-        <Button onClick={() => this.props.changeNodeENV('production')}>PRODUCTION</Button>
+      <div>
+        <Dropdown overlay={menu}>
+         <Button style={{ marginLeft: 8 }}>
+           {this.props.node_env} <Icon type="down" />
+         </Button>
+        </Dropdown>
       </div>
     )
   }
 
   renderDomainChoices() {
+    const handleMenuClick = (e) => {
+      if (e.key == ".$4"){
+        message.info('Geo')
+        this.props.changeChosenDomain('geo')
+      }
+      else if (e.key == ".$5") {
+        message.info('Searching')
+        this.props.changeChosenDomain('searching')
+      }
+      else if (e.key == ".$6"){
+        message.info('Meta')
+        this.props.changeChosenDomain('meta')
+      }
+      else if (e.key == ".$7"){
+        message.info('General')
+        this.props.changeChosenDomain('general')
+      }
+      else if (e.key == ".$8"){
+        message.info('Tours')
+        this.props.changeChosenDomain('tours')
+      }
+      else if (e.key == ".$9"){
+        message.info('Spec_struc')
+        this.props.changeChosenDomain('spec_struc')
+      }
+      else {
+        message.info('Spec_unstruc')
+        this.props.changeChosenDomain('spec_unstruc')
+      }
+    }
+    const menu = (
+      <Menu onClick={handleMenuClick}>
+        <Menu.Item key="4">GEO</Menu.Item>
+        <Menu.Item key="5">SEARCHING</Menu.Item>
+        <Menu.Item key="6">META</Menu.Item>
+        <Menu.Item key="7">GENERAL</Menu.Item>
+        <Menu.Item key="8">TOURS</Menu.Item>
+        <Menu.Item key="9">SPEC_STRUC</Menu.Item>
+        <Menu.Item key="10">SPEC_UNSTRUC</Menu.Item>
+      </Menu>
+    )
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', backgroundColor: 'red', padding: '10px' }}>
-        <Button onClick={() => this.props.changeChosenDomain('geo')}>GEO</Button>
-        <Button onClick={() => this.props.changeChosenDomain('searching')}>SEARCHING</Button>
-        <Button onClick={() => this.props.changeChosenDomain('meta')}>META</Button>
-        <Button onClick={() => this.props.changeChosenDomain('general')}>GENERAL</Button>
-        <Button onClick={() => this.props.changeChosenDomain('tours')}>TOURS</Button>
-        <Button onClick={() => this.props.changeChosenDomain('spec_struc')}>SPEC_STRUC</Button>
-        <Button onClick={() => this.props.changeChosenDomain('spec_unstruc')}>SPEC_UNSTRUC</Button>
+      <div>
+        <Dropdown overlay={menu}>
+         <Button style={{ marginLeft: 8 }}>
+           {this.props.chosen_domain} <Icon type="down" />
+         </Button>
+        </Dropdown>
       </div>
     )
   }
@@ -53,12 +115,14 @@ class Dashboard extends Component {
 		return (
 			<div id='Dashboard' style={comStyles().container}>
 				<h1>RentHero Health Dashboard</h1>
-        {
-          this.renderNodeENVS()
-        }
-        {
-          this.renderDomainChoices()
-        }
+        <div style={comStyles().dropdowns}>
+          {
+            this.renderNodeENVS()
+          }
+          {
+            this.renderDomainChoices()
+          }
+        </div>
         <DomainMappings />
         {
           this.renderUI()
@@ -109,8 +173,12 @@ const comStyles = () => {
 		container: {
       display: 'flex',
       flexDirection: 'column',
-      backgroundColor: 'yellow',
+      backgroundColor: 'lightblue',
       padding: '10px',
+      textAlign: 'center',
+		},
+    dropdowns: {
+      textAlign: 'center',
 		}
 	}
 }

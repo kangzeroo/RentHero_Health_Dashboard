@@ -8,8 +8,8 @@ import PropTypes from 'prop-types'
 import Rx from 'rxjs'
 import { withRouter } from 'react-router-dom'
 import {
-  Button,
 } from 'antd-mobile'
+import { Button, Menu, Dropdown, Icon, message, Card } from 'antd'
 import { changeChosenTypeform } from '../../actions/app/app_actions'
 import { getBasicFormMappings, getAdvancedFormMappings, getSeekingFormMappings } from '../../api/mappings/mappings_api'
 
@@ -80,37 +80,45 @@ class TypeformMappings extends Component {
     console.log(questions)
     return (
       <div>
-        <input value={this.state.search_string} placeholder='Search Filter' onChange={(e) => this.setState({ search_string: e.target.value })} />
-        <div style={{ display: 'flex', flexDirection: 'row' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
+        <br />
+        <input value={this.state.search_string} placeholder='Filter Typeforms' onChange={(e) => this.setState({ search_string: e.target.value })} />
+        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around', }}>
+          <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>
             <h2>Intent-to-Tags Mappings</h2>
             <h4>FORM ID: {this.state.intentMap.form_id}</h4>
             {
               relationships.map((rel) => {
                 return (
                   <div key={rel.dialogFlow_intentID}>
-                    <div><b>ID: </b>{rel.dialogFlow_intentID}</div>
-                    <div><b>NAME: </b>{rel.dialogFlow_intentName}</div>
-                    <div style={comStyles().tag}><b>TAGS: </b>{JSON.stringify(rel.typeForm_Tags)}</div>
+                    <Card style={{ width: 400, marginTop: '5%'}}>
+                      <p>ID: <br />d{rel.dialogFlow_intentID} </p>
+                      <p>NAME: <br />{rel.dialogFlow_intentName}</p>
+                      <p>ENDPOINT: <br />{rel.typeForm_Tags}</p>
+                    </Card>
                   </div>
                 )
               })
             }
+
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>
             <h2>Typeform-to-Tags Mappings</h2>
             <h4>FORM ID: {(this.state.typeformMap.form_id)}</h4>
+            <div>
             {
               questions.map((ques) => {
                 return (
                   <div key={JSON.stringify(ques.question_ids)}>
-                    <div><b>ID: </b>{JSON.stringify(ques.question_ids)}</div>
-                    <div><b>QUESTION: </b>{ques.sample_phrasing}</div>
-                    <div style={comStyles().tag}><b>TAGS: </b>{JSON.stringify(ques.tag_ids)}</div>
+                    <Card style={{ width: 400, marginTop: '5%'}}>
+                      <p>ID: <br />d{ques.question_ids} </p>
+                      <p>QUESTION: <br />{ques.sample_phrasing}</p>
+                      <p>ENDPOINT: <br />{ques.tag_ids}</p>
+                    </Card>
                   </div>
                 )
               })
             }
+            </div>
           </div>
         </div>
       </div>
@@ -118,11 +126,34 @@ class TypeformMappings extends Component {
   }
 
   renderChoices() {
+    const handleMenuClick = (e) => {
+      if (e.key == ".$11"){
+        message.info('Basic')
+        this.props.changeChosenTypeform('basic')
+      }
+      else if (e.key == ".$12") {
+        message.info('Advanced')
+        this.props.changeChosenTypeform('advanced')
+      }
+      else if (e.key == ".$13") {
+        message.info('Seeking')
+        this.props.changeChosenTypeform('seeking')
+      }
+    }
+    const menu = (
+      <Menu onClick={handleMenuClick}>
+        <Menu.Item key="11">BASIC</Menu.Item>
+        <Menu.Item key="12">ADVANCED</Menu.Item>
+        <Menu.Item key="13">SEEKING</Menu.Item>
+      </Menu>
+    )
     return (
-      <div style={{ display: 'flex', flexDirection: 'row' }}>
-        <Button onClick={() => this.props.changeChosenTypeform('basic')}>BASIC TYPEFORM</Button>
-        <Button onClick={() => this.props.changeChosenTypeform('advanced')}>ADVANCED TYPEFORM</Button>
-        <Button onClick={() => this.props.changeChosenTypeform('seeking')}>SEEKING TYPEFORM</Button>
+      <div>
+        <Dropdown overlay={menu}>
+         <Button style={{ marginLeft: 8 }}>
+           {this.props.chosen_typeform} <Icon type="down" />
+         </Button>
+        </Dropdown>
       </div>
     )
   }
@@ -130,10 +161,10 @@ class TypeformMappings extends Component {
 	render() {
 		return (
 			<div id='TypeformMappings' style={comStyles().container}>
+        <h1>{this.props.chosen_typeform} TypeformMappings for {this.props.node_env}</h1>
         {
           this.renderChoices()
         }
-				<h1>{this.props.chosen_typeform} TypeformMappings for {this.props.node_env}</h1>
         {
           this.state.intentMap && this.state.typeformMap
           ?
